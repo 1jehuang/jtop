@@ -1,0 +1,77 @@
+--- a/src/jtop_draw.cpp
++++ b/src/jtop_draw.cpp
+@@ -1647,9 +1647,108 @@ namespace Proc {
+ 	atomic<bool> resized (false);
+ 
+ 	string box;
++
++	//* Helper to draw a process line in split view
++	void draw_split_line(string& out, const proc_info& p, int row, int col, int prog_size, int user_size,
++						bool is_selected, bool is_followed, bool proc_colors, bool proc_gradient,
++						int selected, int lc, int select_max, int totalMem, bool mem_bytes) {
++		string c_color, m_color, g_color, end;
++		if (is_selected or is_followed) {
++			c_color = m_color = g_color = Fx::b;
++			end = Fx::ub;
++			const string highlight = is_followed ? Theme::c("followed_bg") + Theme::c("followed_fg") : Theme::c("selected_bg") + Theme::c("selected_fg");
++			fmt::format_to(std::back_inserter(out), "{}{}", highlight, Fx::b);
++		}
++		else {
++			int calc = (selected > lc) ? selected - lc : lc - selected;
++			if (proc_colors) {
++				end = Theme::c("main_fg") + Fx::ub;
++				int vcpu = (int)round(p.cpu_p);
++				int vmem = (int)round(p.mem * 100 / totalMem);
++				if (proc_gradient) {
++					int vc = (min(vcpu, 100) + 100) - calc * 100 / select_max;
++					if (vc < 100) c_color = Theme::g("proc_color").at(max(0, vc));
++					else c_color = Theme::g("process").at(clamp(vc - 100, 0, 100));
++					int vm = (min(vmem, 100) + 100) - calc * 100 / select_max;
++					if (vm < 100) m_color = Theme::g("proc_color").at(max(0, vm));
++					else m_color = Theme::g("process").at(clamp(vm - 100, 0, 100));
++				}
++				else {
++					c_color = Theme::g("process").at(clamp(vcpu, 0, 100));
++					m_color = Theme::g("process").at(clamp(vmem, 0, 100));
++				}
++			}
++			else {
++				c_color = m_color = Fx::b;
++				end = Fx::ub;
++			}
++			if (proc_gradient) {
++				g_color = Theme::g("proc").at(clamp(calc * 100 / select_max, 0, 100));
++			}
++		}
++
++		string cpu_str = fmt::format("{:.1f}", p.cpu_p);
++		if (cpu_str.size() > 4) cpu_str.resize(4);
++		string mem_str = (mem_bytes ? floating_humanizer(p.mem, true) : "");
++		if (not mem_bytes) {
++			double mem_p = clamp((double)p.mem * 100 / totalMem, 0.0, 100.0);
++			mem_str = mem_p < 0.01 ? "0" : fmt::format("{:.1f}", mem_p);
++			if (mem_str.size() > 3) mem_str.resize(3);
++			if (mem_str.ends_with('.')) mem_str.pop_back();
++			mem_str += '%';
++		}
++
++		out += Mv::to(row, col)
++			+ g_color + rjust(to_string(p.pid), 7) + ' '
++			+ ljust(p.name, prog_size, true) + ' ' + end
++			+ g_color + ljust(p.user, user_size, true) + ' '
++			+ m_color + rjust(mem_str, 5) + ' '
++			+ c_color + rjust(cpu_str, 5)
++			+ Fx::reset;
++	}
+ 
+ 	int selection(const std::string_view cmd_key) {
+ 		auto start = Config::getI("proc_start");
+@@ -1650,6 +1749,7 @@ namespace Proc {
+ 
+ 	string draw(const vector<proc_info>& plist, bool force_redraw, bool data_same) {
+ 		if (Runner::stopping) return "";
+ 		auto proc_tree = Config::getB("proc_tree");
++		auto proc_split_view = Config::getB("proc_split_view");
+ 		bool show_detailed = (Config::getB("show_detailed") and cmp_equal(Proc::detailed.last_pid, Config::getI("detailed_pid")));
+ 		bool proc_gradient = (Config::getB("proc_gradient") and not Config::getB("lowcolor") and Theme::gradients.contains("proc"));
+ 		auto proc_colors = Config::getB("proc_colors");

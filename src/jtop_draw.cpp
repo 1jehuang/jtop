@@ -1648,6 +1648,8 @@ namespace Proc {
 	}
 
 	string draw(const vector<proc_info>& plist, bool force_redraw, bool data_same) {
+
+	auto proc_split_view = Config::getB("proc_split_view");
 		if (Runner::stopping) return "";
 		auto proc_tree = Config::getB("proc_tree");
 		bool show_detailed = (Config::getB("show_detailed") and cmp_equal(Proc::detailed.last_pid, Config::getI("detailed_pid")));
