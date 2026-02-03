@@ -122,6 +122,7 @@ namespace Config {
 		{"proc_filter_kernel",  "#* (Linux) Filter processes tied to the Linux kernel(similar behavior to htop)."},
 
 		{"proc_follow_detailed",	"#* Should the process list follow the selected process when detailed view is open."},
+		{"proc_split_view",		"#* Show split process view with top CPU and top memory users side by side."},
 
 		{"proc_aggregate",		"#* In tree-view, always accumulate child process resources in the parent process."},
 
@@ -339,6 +340,7 @@ namespace Config {
 		{"keep_dead_proc_usage", false},
 		{"proc_banner_shown", false},
 		{"proc_follow_detailed", true},
+		{"proc_split_view", false},
 		{"follow_process", false},
 		{"update_following", false},
 		{"should_selection_return_to_followed", false},
