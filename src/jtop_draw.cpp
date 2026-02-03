@@ -28,14 +28,14 @@ tab-size = 4
 
 #include <fmt/format.h>
 
-#include "btop_config.hpp"
-#include "btop_draw.hpp"
-#include "btop_input.hpp"
-#include "btop_log.hpp"
-#include "btop_menu.hpp"
-#include "btop_shared.hpp"
-#include "btop_theme.hpp"
-#include "btop_tools.hpp"
+#include "jtop_config.hpp"
+#include "jtop_draw.hpp"
+#include "jtop_input.hpp"
+#include "jtop_log.hpp"
+#include "jtop_menu.hpp"
+#include "jtop_shared.hpp"
+#include "jtop_theme.hpp"
+#include "jtop_tools.hpp"
 
 using std::array;
 using std::clamp;
@@ -116,7 +116,7 @@ namespace Draw {
 			string b_color, bg, fg, oc, letter;
 			auto lowcolor = Config::getB("lowcolor");
 			auto tty_mode = Config::getB("tty_mode");
-			for (size_t z = 0; const auto& line : Global::Banner_src) {
+			for (size_t z = 0; const auto& line : Global::Jtop_banner_src) {
 				if (const auto w = ulen(line[1]); w > width) width = w;
 				if (tty_mode) {
 					fg = (z > 2) ? "\x1b[31m" : "\x1b[91m";
@@ -140,7 +140,7 @@ namespace Draw {
 					banner += letter;
 					oc = b_color;
 				}
-				if (++z < Global::Banner_src.size()) banner += Mv::l(ulen(line[1])) + Mv::d(1);
+				if (++z < Global::Jtop_banner_src.size()) banner += Mv::l(ulen(line[1])) + Mv::d(1);
 			}
 			banner += Mv::r(18 - Global::Version.size())
 					+ Theme::c("main_fg") + Fx::b + Fx::i + "v" + Global::Version + Fx::reset;

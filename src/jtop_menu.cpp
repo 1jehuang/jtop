@@ -16,14 +16,14 @@ indent = tab
 tab-size = 4
 */
 
-#include "btop_menu.hpp"
+#include "jtop_menu.hpp"
 
-#include "btop_config.hpp"
-#include "btop_draw.hpp"
-#include "btop_log.hpp"
-#include "btop_shared.hpp"
-#include "btop_theme.hpp"
-#include "btop_tools.hpp"
+#include "jtop_config.hpp"
+#include "jtop_draw.hpp"
+#include "jtop_log.hpp"
+#include "jtop_shared.hpp"
+#include "jtop_theme.hpp"
+#include "jtop_tools.hpp"
 
 #include <errno.h>
 #include <signal.h>
@@ -1186,9 +1186,9 @@ namespace Menu {
 			bg = Draw::banner_gen(y, 0, true);
 			if (not tty_mode) {
 				colors_selected = {
-					Theme::hex_to_color(Global::Banner_src.at(0).at(0)),
-					Theme::hex_to_color(Global::Banner_src.at(2).at(0)),
-					Theme::hex_to_color(Global::Banner_src.at(4).at(0))
+					Theme::hex_to_color(Global::Jtop_banner_src.at(0).at(0)),
+					Theme::hex_to_color(Global::Jtop_banner_src.at(2).at(0)),
+					Theme::hex_to_color(Global::Jtop_banner_src.at(4).at(0))
 				};
 				colors_normal = {
 					Theme::hex_to_color("#CC"),

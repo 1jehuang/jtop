@@ -16,7 +16,7 @@ indent = tab
 tab-size = 4
 */
 
-#include "btop.hpp"
+#include "jtop.hpp"
 
 #include <algorithm>
 #include <atomic>
@@ -59,15 +59,15 @@ tab-size = 4
 #include <fmt/core.h>
 #include <fmt/ostream.h>
 
-#include "btop_cli.hpp"
-#include "btop_config.hpp"
-#include "btop_draw.hpp"
-#include "btop_input.hpp"
-#include "btop_log.hpp"
-#include "btop_menu.hpp"
-#include "btop_shared.hpp"
-#include "btop_theme.hpp"
-#include "btop_tools.hpp"
+#include "jtop_cli.hpp"
+#include "jtop_config.hpp"
+#include "jtop_draw.hpp"
+#include "jtop_input.hpp"
+#include "jtop_log.hpp"
+#include "jtop_menu.hpp"
+#include "jtop_shared.hpp"
+#include "jtop_theme.hpp"
+#include "jtop_tools.hpp"
 
 using std::atomic;
 using std::cout;
@@ -85,13 +85,13 @@ using namespace std::chrono_literals;
 using namespace std::literals;
 
 namespace Global {
-	const vector<array<string, 2>> Banner_src = {
-		{"#E62525", "██████╗ ████████╗ ██████╗ ██████╗"},
-		{"#CD2121", "██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗   ██╗    ██╗"},
-		{"#B31D1D", "██████╔╝   ██║   ██║   ██║██████╔╝ ██████╗██████╗"},
-		{"#9A1919", "██╔══██╗   ██║   ██║   ██║██╔═══╝  ╚═██╔═╝╚═██╔═╝"},
-		{"#801414", "██████╔╝   ██║   ╚██████╔╝██║        ╚═╝    ╚═╝"},
-		{"#000000", "╚═════╝    ╚═╝    ╚═════╝ ╚═╝"},
+	const vector<array<string, 2>> Jtop_banner_src = {
+		{"#E62525", "     ██╗████████╗ ██████╗ ██████╗"},
+		{"#CD2121", "     ██║╚══██╔══╝██╔═══██╗██╔══██╗   ██╗    ██╗"},
+		{"#B31D1D", "     ██║   ██║   ██║   ██║██████╔╝ ██████╗██████╗"},
+		{"#9A1919", "██   ██║   ██║   ██║   ██║██╔═══╝  ╚═██╔═╝╚═██╔═╝"},
+		{"#801414", "╚█████╔╝   ██║   ╚██████╔╝██║        ╚═╝    ╚═╝"},
+		{"#000000", " ╚════╝    ╚═╝    ╚═════╝ ╚═╝"},
 	};
 	const string Version = "1.4.6";
 
@@ -851,7 +851,7 @@ static auto configure_tty_mode(std::optional<bool> force_tty) {
 
 
 //* --------------------------------------------- Main starts here! ---------------------------------------------------
-[[nodiscard]] auto btop_main(const std::span<const std::string_view> args) -> int {
+[[nodiscard]] auto jtop_main(const std::span<const std::string_view> args) -> int {
 
 	//? ------------------------------------------------ INIT ---------------------------------------------------------
 

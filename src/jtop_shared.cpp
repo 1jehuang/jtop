@@ -23,9 +23,9 @@ tab-size = 4
 #include <regex>
 #include <string>
 
-#include "btop_config.hpp"
-#include "btop_shared.hpp"
-#include "btop_tools.hpp"
+#include "jtop_config.hpp"
+#include "jtop_shared.hpp"
+#include "jtop_tools.hpp"
 
 namespace fs = std::filesystem;
 namespace rng = std::ranges;

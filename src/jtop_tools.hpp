@@ -19,7 +19,7 @@ tab-size = 4
 #pragma once
 
 #if !defined(NDEBUG)
-# define BTOP_DEBUG
+# define JTOP_DEBUG
 #endif
 
 #include <algorithm>        // for std::ranges::count_if
@@ -37,7 +37,7 @@ tab-size = 4
 #include <tuple>
 #include <unordered_map>
 #include <vector>
-#ifdef BTOP_DEBUG
+#ifdef JTOP_DEBUG
 #include <source_location>
 #endif
 #ifndef HOST_NAME_MAX
@@ -51,7 +51,7 @@ tab-size = 4
 #include <fmt/core.h>
 #include <fmt/format.h>
 
-#include "btop_log.hpp"
+#include "jtop_log.hpp"
 
 using std::array;
 using std::atomic;
@@ -315,7 +315,7 @@ namespace Tools {
 	std::string operator*(const string& str, int64_t n);
 
 	template <typename K, typename T>
-#ifdef BTOP_DEBUG
+#ifdef JTOP_DEBUG
 	const T& safeVal(const std::unordered_map<K, T>& map, const K& key, const T& fallback = T{}, std::source_location loc = std::source_location::current()) {
 		if (auto it = map.find(key); it != map.end()) {
 			return it->second;
@@ -329,14 +329,14 @@ namespace Tools {
 		if (auto it = map.find(key); it != map.end()) {
 			return it->second;
 		} else {
-			Logger::error("safeVal() called with invalid key: [{}] (Compile btop with DEBUG=true for more extensive logging!)", key);
+			Logger::error("safeVal() called with invalid key: [{}] (Compile jtop with DEBUG=true for more extensive logging!)", key);
 			return fallback;
 		}
 	};
 #endif
 
 	template <typename T>
-#ifdef BTOP_DEBUG
+#ifdef JTOP_DEBUG
 	const T& safeVal(const std::vector<T>& vec, const size_t& index, const T& fallback = T{}, std::source_location loc = std::source_location::current()) {
 		if (index < vec.size()) {
 			return vec[index];
@@ -350,7 +350,7 @@ namespace Tools {
 		if (index < vec.size()) {
 			return vec[index];
 		} else {
-			Logger::error("safeVal() called with invalid index: [{}] (Compile btop with DEBUG=true for more extensive logging!)", index);
+			Logger::error("safeVal() called with invalid index: [{}] (Compile jtop with DEBUG=true for more extensive logging!)", index);
 			return fallback;
 		}
 	};

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
-#include "btop_log.hpp"
+#include "jtop_log.hpp"
 
-#include "btop_shared.hpp"
+#include "jtop_shared.hpp"
 
 #include <algorithm>
 #include <cerrno>

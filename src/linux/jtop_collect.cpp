@@ -51,10 +51,10 @@ tab-size = 4
 	#include <pwd.h>
 #endif
 
-#include "../btop_config.hpp"
-#include "../btop_log.hpp"
-#include "../btop_shared.hpp"
-#include "../btop_tools.hpp"
+#include "../jtop_config.hpp"
+#include "../jtop_log.hpp"
+#include "../jtop_shared.hpp"
+#include "../jtop_tools.hpp"
 
 #if defined(GPU_SUPPORT)
 	// Redefining C++ keywords fortunately has a warning in clang, however it's unavoidable here

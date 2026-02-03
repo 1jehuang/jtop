@@ -27,12 +27,12 @@ tab-size = 4
 #include <utility>
 #include <cmath>
 
-#include "btop_input.hpp"
-#include "btop_tools.hpp"
-#include "btop_config.hpp"
-#include "btop_shared.hpp"
-#include "btop_menu.hpp"
-#include "btop_draw.hpp"
+#include "jtop_input.hpp"
+#include "jtop_tools.hpp"
+#include "jtop_config.hpp"
+#include "jtop_shared.hpp"
+#include "jtop_menu.hpp"
+#include "jtop_draw.hpp"
 
 using namespace Tools;
 using namespace std::literals; // for operator""s
