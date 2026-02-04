@@ -1991,95 +1991,6 @@ namespace Proc {
 		if (selected > numpids)
 			selected = numpids;
 
-		//* Split View Rendering
-		if (proc_split_view and not proc_tree) {
-			//? Create copies of process list for CPU and Memory sorting
-			static vector<proc_info> cpu_procs;
-			static vector<proc_info> mem_procs;
-			cpu_procs.clear();
-			mem_procs.clear();
-			
-			for (const auto& p : plist) {
-				if (not p.filtered) {
-					cpu_procs.push_back(p);
-					mem_procs.push_back(p);
-				}
-			}
-			
-			//? Sort by CPU (descending) and Memory (descending)
-			rng::stable_sort(cpu_procs, rng::greater{}, &proc_info::cpu_p);
-			rng::stable_sort(mem_procs, rng::greater{}, &proc_info::mem);
-			
-			//? Calculate column widths
-			int half_width = width / 2 - 1;
-			int left_prog_size = max(8, half_width - 25);
-			int right_prog_size = max(8, half_width - 25);
-			int col_user_size = 6;
-			
-			//? Draw column headers
-			if (redraw) {
-				out += Mv::to(y+1, x+1) + Theme::c("title") + Fx::b
-					+ "Top CPU:" + string(half_width - 9, ' ')
-					+ "Top Memory:" + Fx::ub;
-				
-				//? Sub-headers
-				out += Mv::to(y+2, x+1) + Theme::c("title") + Fx::b
-					+ rjust("Pid", 7) + ' ' + ljust("Program", left_prog_size) + ' '
-					+ ljust("User", col_user_size) + ' '
-					+ rjust("CPU%", 5);
-				out += Mv::to(y+2, x + half_width + 2) + Theme::c("title") + Fx::b
-					+ rjust("Pid", 7) + ' ' + ljust("Program", right_prog_size) + ' '
-					+ ljust("User", col_user_size) + ' '
-					+ rjust("Mem%", 5) + Fx::ub;
-			}
-			
-			//? Draw process lines in two columns
-			int max_rows = min(height - 4, (int)min(cpu_procs.size(), mem_procs.size()));
-			for (int row = 0; row < max_rows; ++row) {
-				int line_y = y + 3 + row;
-				
-				//? Left column - Top CPU
-				if (row < (int)cpu_procs.size()) {
-					const auto& p = cpu_procs[row];
-					string cpu_str = fmt::format("{:.1f}", p.cpu_p);
-					if (cpu_str.size() > 4) cpu_str.resize(4);
-					
-					string color = Theme::c("main_fg");
-					if (p.cpu_p > 50) color = Theme::c("red");
-					else if (p.cpu_p > 25) color = Theme::c("yellow");
-					
-					out += Mv::to(line_y, x+1) + Theme::c("main_fg")
-						+ rjust(to_string(p.pid), 7) + ' '
-						+ color + ljust(p.name, left_prog_size, true) + Theme::c("main_fg") + ' '
-						+ ljust(p.user, col_user_size, true) + ' '
-						+ color + rjust(cpu_str, 5);
-				}
-				
-				//? Right column - Top Memory
-				if (row < (int)mem_procs.size()) {
-					const auto& p = mem_procs[row];
-					double mem_p = clamp((double)p.mem * 100 / totalMem, 0.0, 100.0);
-					string mem_str = mem_p < 0.01 ? "0" : fmt::format("{:.1f}", mem_p);
-					if (mem_str.size() > 4) mem_str.resize(4);
-					
-					string color = Theme::c("main_fg");
-					if (mem_p > 25) color = Theme::c("red");
-					else if (mem_p > 10) color = Theme::c("yellow");
-					
-					out += Mv::to(line_y, x + half_width + 2) + Theme::c("main_fg")
-						+ rjust(to_string(p.pid), 7) + ' '
-						+ color + ljust(p.name, right_prog_size, true) + Theme::c("main_fg") + ' '
-						+ ljust(p.user, col_user_size, true) + ' '
-						+ color + rjust(mem_str, 5);
-				}
-			}
-			
-			//? Fill empty lines
-			for (int row = max_rows; row < height - 4; ++row) {
-				out += Mv::to(y + 3 + row, x + 1) + string(width - 2, ' ');
-			}
-		}
-		else {
 		//* Iteration over processes
 		int lc = 0;
 		for (int n=0; auto& p : plist) {
@@ -2223,7 +2134,6 @@ namespace Proc {
 					: "Following process", width - 2,
 				Fx::reset);
 		}
-		}  //? End of normal (non-split) view
 
 		//? Draw scrollbar if needed
 		if (numpids > select_max) {
